@@ -11,7 +11,6 @@ var soundEffectsOn = false;
 var maxLevel = 10;
 var startLives = 5;
 var menuSelection = 0;
-// var optionsSelection;
 var level;
 var waitTime;
 var difficulty;
@@ -25,16 +24,6 @@ var minY = 0;
 var backgroundContext;
 var actionContext;
 var menuContext;
-
-/* 
-Song[] musicList = new Song[3];
-int currentSong = 0;
-SoundEffect fire;
-SoundEffect thrust;
-SoundEffectInstance thrustInstance;
-SoundEffect boom;
-SoundEffect boom2;
- */
 
 var ship;
 var fireballs  = [];
@@ -555,7 +544,6 @@ for (code in KEY_CODES) {
 }
 
 document.onkeydown = function(e) {
-  // Firefox and opera use charCode instead of keyCode to return which key was pressed.
   var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
   if (KEY_CODES[keyCode]) {
     e.preventDefault();
