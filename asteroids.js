@@ -162,6 +162,7 @@ Ship.prototype.move = function () {
 			var currentTime = new Date();
 			if (currentTime - startTime > bestTime) {
 				bestTime = currentTime - startTime;
+				localStorage.setItem('best_time', bestTime);
 			}
 			break;
 		}
@@ -369,8 +370,8 @@ function handleGamePage() {
 		timer = formatTime(currentTime - startTime);
 		ship.control();
 	}
-
-	drawString('Best time: ' + formatTime(bestTime), actionContext, 21, new Vector(1800, 25));
+	const best_time = localStorage.getItem('best_time');
+	drawString('Best time: ' + formatTime(best_time), actionContext, 21, new Vector(1800, 25));
 	drawString('Time: ' + timer, actionContext, 21, new Vector(1821, 52));
 }
 
