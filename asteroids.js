@@ -447,9 +447,9 @@ function reset() {
 
 function randomAsteroid(posX, posY, isBig) {
 	var asteroidAngle = Math.random() * circle;
-
-	var dirX = Math.cos(asteroidAngle);
-	var dirY = Math.sin(asteroidAngle);
+	var speed = Math.random()*3;
+	var dirX = Math.cos(asteroidAngle) * speed;
+	var dirY = Math.sin(asteroidAngle) * speed;
 
 	asteroids.push(new Asteroid(new Vector(posX, posY), new Vector(dirX, dirY), 0, asteroidRotation, isBig));
 	asteroidRotation *= -1;
