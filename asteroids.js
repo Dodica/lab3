@@ -371,8 +371,9 @@ function init() {
 	setupCanvas('action', 'actionContext');
 	setupCanvas('menu', 'menuContext');
 
-	// Inicijalizacija najboljeg vremena
-	localStorage.setItem('best_time', 0);
+	// Inicijalizacija najboljeg vremena i pamćenje starog
+	bestTime = localStorage.getItem('best_time');
+	localStorage.setItem('best_time', bestTime);
 
 	// Crtanje pozadinske slike
 	backgroundContext.drawImage(imageRepo.background, 0, 0);
