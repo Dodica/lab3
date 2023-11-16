@@ -6,8 +6,9 @@ var menu;
 var bestTime = 0;
 var timer;
 var startTime;
-var difficulty = 10;
+var difficulty;
 var life;
+var pressed = false;
 
 var maxX = window.innerWidth;
 var minX = 0;
@@ -383,9 +384,6 @@ function init() {
 
 	// Prikaz naslova i upravljačkih opcija u izborniku
 	displayMenu();
-
-	// Pokretanje nove igre i početak animacije
-	newGame();
 	animate();
 }
 
@@ -404,11 +402,31 @@ function displayMenu() {
 	// Crta naslovnu sliku na sredini ekrana
 	new Drawable(imageRepo.title, new Vector(maxX / 2, maxY / 3)).draw(menuContext);
 
-	// Crta tekst "Press Enter to start game" ispod naslovne slike
-	drawString('Press Enter to start game', menuContext, 25, new Vector(maxX / 2, maxY / 1.65));
+	// Dodaj tekst za odabir težine igre
+	drawString('Select difficulty:', menuContext, 20, new Vector(maxX / 2, maxY / 1.5));
 
-	// Crta sliku kontrola na dnu ekrana
-	new Drawable(imageRepo.controls, new Vector(maxX / 2, maxY - 70)).draw(menuContext);
+	// Dodaj opcije za težinu igre
+	drawString('Easy (Press "E")', menuContext, 18, new Vector(maxX / 2, maxY / 1.4));
+	drawString('Medium (Press "M")', menuContext, 18, new Vector(maxX / 2, maxY / 1.35));
+	drawString('Hard (Press "H")', menuContext, 18, new Vector(maxX / 2, maxY / 1.3));
+
+	// Postavi težinu igre na osnovu pritiska tipki
+	document.addEventListener('keydown', function (event) {
+		switch (event.key.toUpperCase()) {
+			case 'E':
+				difficulty = 5; // Easy
+				pressed = true;
+				break;
+			case 'M':
+				difficulty = 10; // Medium
+				pressed = true;
+				break;
+			case 'H':
+				difficulty = 15; // Hard
+				pressed = true;
+				break;
+		}
+	});
 }
 
 function animate() {
@@ -426,15 +444,27 @@ function animate() {
 }
 
 function handleTitlePage() {
-	// Rukuje događajem na naslovnici (npr. pritisak tipke Enter za početak igre)
-	if (KEY_STATUS.enter) {
-		// Briše sadržaj iz meni konteksta
-		menuContext.clearRect(0, 0, maxX, maxY);
 
-		// Postavlja naslovnicu na "false"
-		titlePage = false;
-		// Pamti trenutno vrijeme za izračun najboljeg vremena
-		startTime = new Date();
+	if (pressed) {
+		setupCanvas('menu', 'menuContext');
+		// Crta tekst "Press Enter to start game" ispod naslovne slike
+		drawString('Press Enter to start game', menuContext, 25, new Vector(maxX / 2, maxY / 1.65));
+
+		// Crta sliku kontrola na dnu ekrana
+		new Drawable(imageRepo.controls, new Vector(maxX / 2, maxY - 70)).draw(menuContext);
+
+		// Rukuje događajem na naslovnici (npr. pritisak tipke Enter za početak igre)
+		if (KEY_STATUS.enter) {
+			// Briše sadržaj iz meni konteksta
+			menuContext.clearRect(0, 0, maxX, maxY);
+	
+			// Postavlja naslovnicu na "false"
+			titlePage = false;
+			// Pamti trenutno vrijeme za izračun najboljeg vremena
+			startTime = new Date();
+			// Pokretanje nove igre i početak animacije
+			newGame();
+		}
 	}
 }
 
