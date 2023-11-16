@@ -636,6 +636,20 @@ function drawFireballs() {
 						for (let a = 0; a < 4; a++) {
 							randomAsteroid(asteroids[x].position.x, asteroids[x].position.y, false);
 						}
+						// Dodavanje novog asteroida
+						var posX, posY;
+
+						// Određivanje pozicije na temelju slučajnosti (gore ili lijevo)
+						if (Math.random() < 0.5) { // Gore
+							posX = Math.random() * (maxX + imageRepo.asteroidBig.width) - imageRepo.asteroidBig.width / 2;
+							posY = minY - imageRepo.asteroidBig.height / 2;
+						} else { // Lijevo
+							posX = minX - imageRepo.asteroidBig.width / 2;
+							posY = Math.random() * (maxY + imageRepo.asteroidBig.height) - imageRepo.asteroidBig.height / 2;
+						}
+
+						// Dodavanje novog asteroida
+						randomAsteroid(posX, posY, true);
 					} else {
 						// Stvara eksploziju
 						explosions.push(new Explosion(asteroids[x].position, false));
