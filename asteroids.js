@@ -20,7 +20,7 @@ var actionContext;
 var menuContext;
 
 var ship;
-var fireballs = [];
+var lasers = [];
 var asteroids = [];
 var explosions = [];
 
@@ -243,7 +243,7 @@ Ship.prototype.control = function () {
 	if (KEY_STATUS.space && this.fireCounter > this.fireRate) {
 		// Iscrtavanje i dodavanje novih vatrenih kugli
 		var position = new Vector(this.position.x + this.direction.x * 30, this.position.y + this.direction.y * 30);
-		fireballs.push(new Moveable(imageRepo.fireball, position, this.direction, this.angle)); // Stvori nove vatrene kugle
+		lasers.push(new Moveable(imageRepo.laser, position, this.direction, this.angle)); // Stvori nove vatrene kugle
 		soundRepo.play('fire'); // Zvuk ispaljivanja
 		this.fireCounter = 0; // Resetiranje brojača ispaljivanja
 	}
@@ -310,7 +310,7 @@ var imageRepo = (function () {
 		ship: loadImage('img/ships.png'),
 		asteroidBig: loadImage('img/asteroidbig.png'),
 		asteroidSmall: loadImage('img/asteroidsmall.png'),
-		fireball: loadImage('img/fireball.png'),
+		laser: loadImage('img/laser.png'),
 		explosionSmall: loadImage('img/explosionsmall.png'),
 		explosionBig: loadImage('img/explosionbig.png'),
 	};
@@ -481,7 +481,7 @@ function handleGamePage() {
 	ship.move();
 
 	// Crta meteore, vatrenke i eksplozije
-	drawFireballs();
+	drawlasers();
 	drawAsteroids();
 	drawExplosions();
 
@@ -576,7 +576,7 @@ function newGame() {
 // Funkcija za resetiranje igre na početne postavke
 function reset() {
 	// Pražnjenje polja vatrenih kugli i asteroida
-	fireballs = [];
+	lasers = [];
 	asteroids = [];
 
 	// Postavljanje broda na sredinu ekrana
@@ -620,43 +620,43 @@ function randomAsteroid(posX, posY, isBig) {
 }
 
 // Funkcija za crtanje vatrenih kugli
-function drawFireballs() {
+function drawlasers() {
 	// Dimenzije vatrene kugle
-	const fireballWidth = imageRepo.fireball.width;
-	const fireballHeight = imageRepo.fireball.height;
+	const laserWidth = imageRepo.laser.width;
+	const laserHeight = imageRepo.laser.height;
 
 	// Granice za provjeru izlaska izvan ekrana
-	const fireMaxX = maxX + fireballWidth / 2;
-	const fireMinX = minX - fireballWidth / 2;
-	const fireMaxY = maxY + fireballHeight / 2;
-	const fireMinY = minY - fireballHeight / 2;
+	const fireMaxX = maxX + laserWidth / 2;
+	const fireMinX = minX - laserWidth / 2;
+	const fireMaxY = maxY + laserHeight / 2;
+	const fireMinY = minY - laserHeight / 2;
 
 	// Iteriranje kroz vatrene kugle u obrnutom redoslijedu
-	for (let i = fireballs.length - 1; i >= 0; i--) {
-		const fireball = fireballs[i];
+	for (let i = lasers.length - 1; i >= 0; i--) {
+		const laser = lasers[i];
 
 		// Pomak vatrene kugle prema trenutnom smjeru
-		fireball.position.x += fireball.direction.x * 4;
-		fireball.position.y += fireball.direction.y * 4;
+		laser.position.x += laser.direction.x * 4;
+		laser.position.y += laser.direction.y * 4;
 
 		// Provjera izlaska izvan granica ekrana
 		if (
-			fireball.position.x < fireMinX ||
-			fireball.position.x > fireMaxX ||
-			fireball.position.y < fireMinY ||
-			fireball.position.y > fireMaxY
+			laser.position.x < fireMinX ||
+			laser.position.x > fireMaxX ||
+			laser.position.y < fireMinY ||
+			laser.position.y > fireMaxY
 		) {
 			// Uklanjanje vatrene kugle iz polja
-			fireballs.splice(i, 1);
+			lasers.splice(i, 1);
 		} else {
 			// Crtanje vatrene kugle na ekranu
-			fireball.draw(actionContext);
+			laser.draw(actionContext);
 
 			// Provjera sudara vatrene kugle s asteroidima
 			for (let x = asteroids.length - 1; x >= 0; x--) {
-				if (fireball.intersects(asteroids[x])) {
+				if (laser.intersects(asteroids[x])) {
 					// Uklanjanje vatrene kugle
-					fireballs.splice(i, 1);
+					lasers.splice(i, 1);
 
 					// Dodavanje eksplozije ovisno o veličini asteroida
 					if (asteroids[x].texture === imageRepo.asteroidBig) {
